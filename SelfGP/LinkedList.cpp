@@ -9,8 +9,9 @@ LinkedList::LinkedList() {
     this->tail = nullptr;
     this->size = 0;
 }
-LinkedList::LinkedList(Location* location) {
-    Node* node = new Node(location);
+LinkedList::LinkedList(Node* newNode) {
+    Node* node = new Node();
+    node->setData(newNode->getData());
     this->head = node;
     this->tail = node;
     this->size = 1;
@@ -44,23 +45,21 @@ int LinkedList::Size() const {
 //End setters and getters
 
 //LinkedList methods
-void LinkedList::pushBack(Location* location) {
-    Node* newNode = new Node(location);
+void LinkedList::pushBack(Node* newNode) {
+    // Create a new node with the provided newNode as content
+    Node* temp = new Node();
+    temp->setData(newNode->getData());
+    temp->setNext(nullptr);
+
     if (this->head == nullptr) {
-        this->head = newNode;
-        this->tail = newNode;
-        this->size++;
-        return;
+        // If the list is empty, set both head and tail to the new node
+        this->head = temp;
+        this->tail = temp;
     }
     else {
-        //disconnect tail and add new node
-        Node* temp;
-        temp = this->tail;
-        this->tail = newNode;
-        newNode = temp;
-        newNode->setNext(this->tail);
-        this->tail->setNext(nullptr);
-        this->size++;
+        // If the list is not empty, append the new node to the end
+        this->tail->setNext(temp);
+        this->tail = temp;
     }
+    this->size++;
 }
-

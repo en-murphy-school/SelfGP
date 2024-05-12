@@ -14,12 +14,12 @@ private:
     void setSize(int size);
 public:
     LinkedList();
-    LinkedList(Location* location);
+    LinkedList(Node* newNode);
     void setHead(Node* head);
     Node* getHead() const;
     void setTail(Node* tail);
     Node* getTail() const;
-    void pushBack(Location* location);
+    void pushBack(Node* newNode);
     int Size() const;
 
 };

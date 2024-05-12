@@ -10,16 +10,22 @@ class Location {
 private:
     string name;
     string description;
+    string explore;
+    bool choice;
     vector<Item*> storeItems;
     vector<Item*> hiddenItems;
 public:
     Location();
     Location(const string& name, const string& description, vector<Item*>& storeItems);
-    Location(const string& name, const string& description, vector<Item*>& storeItems, vector<Item*> hiddenItems);
+    Location(const string& name, const string& description, const string& explore, bool choice, vector<Item*>& storeItems, vector<Item*> hiddenItems);
     string getLocationName() const;
     void setLocationName(const string& name);
     string getLocationDescription() const;
     void setLocationDescription(const string& description);
+    string getLocationExplore();
+    void setLocationExplore(const string& explore);
+    bool getLocationChoice();
+    void setLocationChoice(const bool& choice);
     vector<Item*> getStoreItems() const;
     void addStoreItem(Item* item);
     void removeStoreItem(Item* item);

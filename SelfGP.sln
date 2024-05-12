@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SelfGP", "SelfGP\SelfGP.vcxproj", "{2D1C5913-0D79-4D5E-A5BE-A64E4DB39B63}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{42FF8BB6-B849-416C-A024-874F0C730203}"
-	ProjectSection(SolutionItems) = preProject
-		main.cpp = main.cpp
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

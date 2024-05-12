@@ -3,21 +3,18 @@
 #include <iostream>
 using namespace std;
 
-// Include constructors, getters/setters for Player.h
-// Use pointers for Items[]
+
 
 Player::Player() {
     int money = 0;
     string name = "";
-    //Item*[] itemList = nullptr;
-    //Node* currentLocation = nullptr;
+    vector<Item*> items;
 }
 
-Player::Player(int money, string name, vector<Item*>& items, Location currentLocation) {
+Player::Player(int money, string name) {
     this->money = money;
     this->name = name;
-    this->items = items;
-    this->currentLocation = currentLocation;
+    vector<Item*> items;
 }
 
 string Player::GetName() const {
