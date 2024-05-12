@@ -20,6 +20,11 @@ Player::Player(int money, string name) {
 string Player::GetName() const {
     return this->name;
 }
+
+vector<Item*> Player::GetItems() const {
+    return this->items;
+}
+
 void Player::SetName(string newName) {
     this->name = newName;
 }
@@ -32,22 +37,12 @@ void Player::SetMoney(int newMoney) {
     money = newMoney;
 }
 
-
-/*
-Item[] Player::GetItemList() {
-    return itemList;
+void Player::SetItems(vector<Item*> newItems) {
+    items = newItems;
 }
 
-void SetItemList(Item[]* newItemList) {
-    itemList = newItemList;
-}
 
-Node* GetCurrentLocation() {
-    return currentLocation;
-}
 
-void SetCurrentLocation(Node* newCurrentLocation) {
-    currentLocation = newCurrentLocation;
+void Player::addItem(Item* newItem) {
+    items.push_back(newItem);
 }
-*/
-

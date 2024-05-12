@@ -1,3 +1,3 @@
-Midville A-place-full-of-mid.-Straight-up. In-this-town,-there-are-no-winners.-Are-you-one? true SwordOfPower-AxeOfDestruction-PlateArmorOfFortitude GreavesOfProtection-BootsOfSpeed
-AlexSux Alex-be-my-greatest-opp I-hate-that-guy false ChainmailOfEndurance-ChainmailOfEndurance-ChainmailOfEndurance HelmetOfBravery
+Midville A-place-full-of-mid.-Straight-up. In-this-town,-there-are-no-winners.-Are-you-one? false SwordOfPower-AxeOfDestruction-PlateArmorOfFortitude GreavesOfProtection-BootsOfSpeed
+AlexSux Alex-be-my-greatest-opp I-hate-that-guy false ChainmailOfEndurance-ChainmailOfEndurance-ChainmailOfEndurance HelmetOfBravery-MaceOfJustice
 Thirdtown This-is-the-third-test I-love-coding true ChainmailOfEndurance-RobesOfMysteries-RobesOfMysteries DaggerOfSilence-MaceOfJustice

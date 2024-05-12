@@ -18,13 +18,14 @@ public:
 
     string GetName() const;
     int GetMoney();
-    // Item[] GetItemList();
-    // Node* GetCurrentLocation();
+    vector<Item*> GetItems() const;
 
     void SetName(string newName);
     void SetMoney(int newMoney);
-    //void SetItemList(Item[]* newItemList);
-    //void SetCurrentLocation(Node* newCurrentLocation);
+    void SetItems(vector<Item*> newItems);
+    
+
+    void addItem(Item* newItem);
 };
 
 #endif

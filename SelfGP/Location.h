@@ -23,9 +23,9 @@ public:
     string getLocationDescription() const;
     void setLocationDescription(const string& description);
     string getLocationExplore();
-    void setLocationExplore(const string& explore);
+    void setLocationExplore(const string& newExplore);
     bool getLocationChoice();
-    void setLocationChoice(const bool& choice);
+    void setLocationChoice(const bool& newChoice);
     vector<Item*> getStoreItems() const;
     void addStoreItem(Item* item);
     void removeStoreItem(Item* item);

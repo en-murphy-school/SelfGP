@@ -192,7 +192,13 @@ void generatePlayer() {
     {
         cout << "What difficulty would you like to play on?" << endl << "Easy(1), Medium(2), Hard(3)" << endl;
         cout << "Enter your Choice: ";
-        cin >> difficulty;
+        if (!(cin >> difficulty)) {
+            cout << endl;
+            cout << "Letters are not difficulties." << endl;
+            cout << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
         cout << endl;
         
         if (difficulty >= 1 && difficulty <= 3) {
@@ -216,35 +222,178 @@ void generatePlayer() {
 
 }
 
+void addItem(Item* item) {
+    user.addItem(item);
+}
+
+
+void firstIntro() {
+    cout << "" << endl;
+    cout << user.GetName() << "...     Are you truely ready to take this quest?" << endl;
+    cout << "Do you think you have what it takes to defeat...     him? " << endl;
+    cout << "" << endl;
+    cout << "Either way, if it's adventure you want, you are sure to get it." << endl;
+    cout << "Here, take some gold. Im sure it will help you during your travels." << endl;
+    cout << "You gained " << user.GetMoney() << " gold." << endl;
+    cout << "" << endl;
+    cout << "" << endl;
+    cout << "Your adventure begins in " << currentLocation->getLocationName() << endl;
+    cout << currentLocation->getLocationDescription() << endl;
+    cout << "" << endl;
+}
 
 void getOptions() {
-
+    cout << "**************************************" << endl;
+    cout << "What would you like to do?" << endl;
+    cout << "1. Explore " << currentLocation->getLocationName() << "." << endl;
+    cout << "2. Enter " << currentLocation->getLocationName() << "'s shop." << endl;
+    cout << "3. View your Inventory." << endl;
+    cout << "4. Leave " << currentLocation->getLocationName() << "." << endl;
+    cout << "**************************************" << endl;
+    cout << endl;
 }
 
 void explore() {
+    int choice;
+    bool tf;
+    vector<Item*> itemList = currentLocation->getHiddentItem();
+
+    cout << currentLocation->getLocationExplore() << endl;
+    cin >> choice;
+    if (choice == 1) 
+    {
+        tf = true;
+    }
+    else if (choice == 2) {
+        tf = false;
+    }
+    else {
+        return;
+    }
+
+    if (tf == true && currentLocation->getLocationChoice() == true)
+    {
+        for (Item* item : itemList) {
+            if (item->checkAvailability())
+            {
+                addItem(item);
+                cout << endl;
+                cout << "You obtained: " << item->getItemName() << endl;
+                cout << endl;
+                item->setAvailability(false);
+            }
+            else {
+                cout << endl;
+                cout << "You've already gathered all you can." << endl;
+                cout << endl;
+            }
+        }
+    }
+    else if (tf == false && currentLocation->getLocationChoice() == false)
+    {
+        for (Item* item : itemList) {
+            if (item->checkAvailability())
+            {
+                addItem(item);
+                cout << endl;
+                cout << "You obtained: " << item->getItemName() << endl;
+                cout << endl;
+                item->setAvailability(false);
+            }
+            else {
+                cout << endl;
+                cout << "You've already gathered all you can." << endl;
+                cout << endl;
+            }
+        }
+    }
 
 }
 
 void shop() {
+    vector<Item*> stock = currentLocation->getStoreItems();
+    int counter = 1;
+    int choice;
+
+    cout << endl;
+    cout << "Welcome to " << currentLocation->getLocationName() << "'s shop." << endl;
+    while (true) {
+        cout << "---------------------------------------------------------------" << endl;
+
+        for (Item* item : stock) {
+            cout << counter << ". " << item->getItemName() << ": " << item->getItemDescription() << endl;
+            cout << "Cost: " << item->getItemCost() << " gold." << endl;
+            cout << "---------------------------------------------------------------" << endl;
+            counter++;
+        }
+        cout << endl;
+        cout << "Select the number that corresponds to the item you would like to buy." << endl;
+        if (!(cin >> choice)) {
+            cout << endl;
+            cout << "Letters are not numbers." << endl;
+            cout << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
+        if (choice >= 1 && choice <= stock.size()) {
+            addItem(stock[choice-1]);
+            user.SetMoney(user.GetMoney() - stock[choice - 1]->getItemCost());
+            cout << endl;
+            cout << "You bought: " << stock[choice - 1]->getItemName() << ". " << endl;
+            cout << endl;
+            break;
+        }
+        else {
+            cout << "Please choose from the selectable options" << endl;
+        }
+    }
+
+    cout << endl;
+    cout << "Thank you for shopping! Come back soon!" << endl;
+    cout << endl;
 
 }
 
 void viewInventory() {
+    cout << endl;
+    vector<Item*> inventory = user.GetItems();
 
+    cout << "You have " << user.GetMoney() << " gold." << endl;
+    cout << endl;
+
+    if (inventory.empty()) {
+        cout << "Your inventory is empty... Womp Womp" << endl;
+        cout << endl;
+    }
+    else {
+        cout << "Inventory: " << endl;
+        cout << "---------------------------------------------------------------" << endl;
+        for (Item* item : inventory) {
+            cout << "Name: " << item->getItemName() << "." << endl;
+            cout << "Description: " << item->getItemDescription() << "." << endl;
+            cout << endl;
+            cout << "---------------------------------------------------------------" << endl;
+        }
+        cout << endl;
+    }
 }
 
 void leaveTown() {
+    cout << endl;
     int option = 0;
     while (option != 1 && option != 2) {
-        cout << "Are you sure you would like ot leave town? ( 1:yes, 2:no )" << endl;
+        cout << "Are you sure you would like to leave town? ( 1:yes, 2:no )" << endl;
         cin >> option;
+        cout << endl;
     }
 
     if (option == 1) {
         currentNode = currentNode->getNext();
         if (currentNode != nullptr) {
             currentLocation = currentNode->getData();
-            cout << currentLocation->getLocationDescription();
+            cout << "Your quest takes you to " << currentLocation->getLocationName() << endl;
+            cout << currentLocation->getLocationDescription() << endl;
+            cout << endl;
         }
         else {
             //************************************************************************* Create final level from here
@@ -260,39 +409,53 @@ void leaveTown() {
 
 int main() {
     
-    char choice;
+    int choice;
 
     generateItems();
     generateLocations();
-
     generatePlayer();
 
     currentNode = locationsList.getHead();
-
-    cout << user.GetName() << ": " << user.GetMoney() << endl;
-
-
+    if (currentNode != nullptr) 
+    {
+        currentLocation = currentNode->getData();
+    }
+    else {
+        cout << "Error: No locations found." << endl;
+        return 1;
+    }
     
+    firstIntro();
+
 
     while (finalLevel == false) {
         getOptions();
-        cout << "pick a choice" << endl;
-        cin >> choice;
+        cout << "Pick an option with numbers 1-4." << endl;
+        if (!(cin >> choice)) { 
+            cout << endl;
+            cout << "Why not press a number you fool." << endl;
+            cout << endl;
+            cin.clear(); // Clear the fail state
+            cin.ignore(1000, '\n');
+            continue; 
+        }
         switch (choice) {
-        case '1':
+        case 1:
             explore();
             break;
-        case '2':
-
+        case 2:
+            shop();
             break;
-        case '3':
-            
+        case 3:
+            viewInventory();
             break;
-        case '4':
+        case 4:
             leaveTown();
             break;
         default:
-            
+            cout << endl;
+            cout << "Choose a number from the options! Don't wanna get lost doing sidequests!" << endl;
+            cout << endl;
             continue;
         }
     }

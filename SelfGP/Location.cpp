@@ -20,6 +20,22 @@ Location::Location(const string& name, const string& description, const string& 
     (*this).hiddenItems = hiddenItems;
 }
 
+string Location::getLocationExplore() {
+    return (*this).explore;
+}
+
+void Location::setLocationExplore(const string& newExplore) {
+    (*this).explore = newExplore;
+}
+
+bool Location::getLocationChoice()  {
+    return (*this).choice;
+}
+
+void Location::setLocationChoice(const bool& newChoice) {
+    (*this).choice = newChoice;
+}
+
 string Location::getLocationName() const {
     return (*this).name;
 }
@@ -34,23 +50,6 @@ string Location::getLocationDescription() const {
 
 void Location::setLocationDescription(const string& description) {
     (*this).description = description;
-}
-
-
-string Location::getLocationExplore() {
-    return explore;
-}
-
-void Location::setLocationExplore(const string& explore) {
-    this->explore = explore;
-}
-
-bool Location::getLocationChoice() {
-    return choice;
-}
-
-void Location::setLocationChoice(const bool& choice) {
-    this->choice = choice;
 }
 
 vector<Item*> Location::getStoreItems() const {
