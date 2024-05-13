@@ -18,3 +18,7 @@ ARMOR GauntletsOfStrength Gauntlets-to-wield-great-power. 320 true 14 2
 ARMOR BootsOfSpeed Boots-to-outpace-all-foes. 270 true 10 2
 ARMOR ShieldOfDefiance A-shield-that-defies-all-attacks. 380 true 18 5
 ARMOR GreavesOfProtection Greaves-to-ward-off-harm. 330 true 16 4
+
+ARMOR ScuteChestplate A-piece-of-scute-well-suited-for-Defence.-Though,-much-like-a-turtle,-it-will-slow-you-down. 250 true 30 -5
+WEAPON StaffOfTheSea A-staff-imbued-with-water-commanding-magic.-Allows-the-user-to-summon-water-at-will.-It-is-rather-flimsy-though. 300 true 0 30
+WEAPON MagicNautilousShell A-shell-with-the-ability-to-call-the-power-of-the-sea. 220 true 2 20

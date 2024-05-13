@@ -83,6 +83,19 @@ vector<Item*> getItemList(string list) {
     return itemList;
 }
 
+void readLongText(string text) {
+    for (char c : text)
+    {
+        if (c == '|') {
+            cout << endl;
+        }
+        else {
+            cout << c;
+        }
+    }
+    cout << endl;
+}
+
 
 void generateItems() {
     ifstream inputFile("items.txt");
@@ -129,7 +142,6 @@ void generateItems() {
             itemCount++;
         }
     }
-    cout << endl;
     inputFile.close();
 }
 
@@ -179,18 +191,39 @@ void generatePlayer() {
     string name;
     int difficulty;
     int money;
+
+    cout << "_______________________________________________________________________________" << endl;
+    cout << "_______________________________________________________________________________" << endl;
+    cout << endl;
+    cout << "   _____                      _        _______                  _           " << endl;
+    cout << "  / ____|                    | |      |__   __|                | |          " << endl;
+    cout << " | |     ___  _ __  ___  ___ | | ___     | |_ __ __ ___   _____| | ___ _ __ " << endl;
+    cout << " | |    / _ \\| '_ \\/ __|/ _ \\| |/ _ \\    | | '__/ _` \\ \\ / / _ \\ |/ _ \\ '__|" << endl;
+    cout << " | |___| (_) | | | \\__ \\ (_) | |  __/    | | | | (_| |\\ V /  __/ |  __/ |   " << endl;
+    cout << "  \\_____\\___/|_| |_|___/\\___/|_|\\___|    |_|_|  \\__,_| \\_/ \\___|_|\\___|_|   " << endl;
+    cout << "                                                                            " << endl;
+    cout << "_______________________________________________________________________________" << endl;
+    cout << "_______________________________________________________________________________" << endl;
+    cout << endl;
+
+
+
+
     
     //sP("Welcome message here!");
     //sP("What is your name traveler?");
 
-    cout << "Welcome message here!" << endl;
-    cout << "What is your name traveler?" << endl;
+    cout << "Welcome dear Traveler to our humble kingdom of Cline. A kingdom reaching as far \nas the eye can see. A kingdom which has a wide variety of scenery and towns." << endl;
+    cout << endl;
+    cout << "Ah, who am I kidding. I know you aren't into any of that. Only looking for rough \nand tough adventure. I get it, I used to feel the same when I was young. \n\nNow tell me, what is your name?" << endl;
     
     cin >> name;
-    cout << "Chatter message here" << endl << endl;
+    user.SetName(name);
+    cout << endl;
+    cout << "Alright " << user.GetName() << " the 'Eventual' great. Let me get you situated for your journey." << endl << endl;
     while (true)
     {
-        cout << "What difficulty would you like to play on?" << endl << "Easy(1), Medium(2), Hard(3)" << endl;
+        cout << "Which of the bounties would you like to try and take on?" << endl << "Easy(1), Medium(2), Hard(3)" << endl;
         cout << "Enter your Choice: ";
         if (!(cin >> difficulty)) {
             cout << endl;
@@ -216,8 +249,6 @@ void generatePlayer() {
     else {
         money = 500;
     }
-
-    user.SetName(name);
     user.SetMoney(money);
 
 }
@@ -228,13 +259,14 @@ void addItem(Item* item) {
 
 
 void firstIntro() {
-    cout << "" << endl;
-    cout << user.GetName() << "...     Are you truely ready to take this quest?" << endl;
-    cout << "Do you think you have what it takes to defeat...     him? " << endl;
+    
+    cout << endl;
+    cout << user.GetName() << "...     Are you sure you're ready to take this quest? It looks like a tough one." << endl;
     cout << "" << endl;
     cout << "Either way, if it's adventure you want, you are sure to get it." << endl;
     cout << "Here, take some gold. Im sure it will help you during your travels." << endl;
-    cout << "You gained " << user.GetMoney() << " gold." << endl;
+    cout << endl;
+    cout << "*** You gained " << user.GetMoney() << " gold." << endl;
     cout << "" << endl;
     cout << "" << endl;
     cout << "Your adventure begins in " << currentLocation->getLocationName() << endl;
@@ -258,7 +290,9 @@ void explore() {
     bool tf;
     vector<Item*> itemList = currentLocation->getHiddentItem();
 
-    cout << currentLocation->getLocationExplore() << endl;
+    cout << endl;
+    readLongText(currentLocation->getLocationExplore());
+    cout << endl;
     cin >> choice;
     if (choice == 1) 
     {
@@ -278,7 +312,7 @@ void explore() {
             {
                 addItem(item);
                 cout << endl;
-                cout << "You obtained: " << item->getItemName() << endl;
+                cout << "*** You obtained: " << item->getItemName() << endl;
                 cout << endl;
                 item->setAvailability(false);
             }
@@ -296,7 +330,7 @@ void explore() {
             {
                 addItem(item);
                 cout << endl;
-                cout << "You obtained: " << item->getItemName() << endl;
+                cout << "*** You obtained: " << item->getItemName() << endl;
                 cout << endl;
                 item->setAvailability(false);
             }
@@ -327,7 +361,7 @@ void shop() {
             counter++;
         }
         cout << endl;
-        cout << "Select the number that corresponds to the item you would like to buy." << endl;
+        cout << "Select the number that corresponds to the item you would like to buy. Or, press '0' to leave." << endl;
         if (!(cin >> choice)) {
             cout << endl;
             cout << "Letters are not numbers." << endl;
@@ -335,11 +369,19 @@ void shop() {
             cin.clear();
             cin.ignore(1000, '\n');
         }
+        if (choice == 0) {
+            cout << endl;
+            cout << "You left the shop." << endl;
+            cout << endl;
+            break;
+        }
         if (choice >= 1 && choice <= stock.size()) {
             addItem(stock[choice-1]);
             user.SetMoney(user.GetMoney() - stock[choice - 1]->getItemCost());
             cout << endl;
-            cout << "You bought: " << stock[choice - 1]->getItemName() << ". " << endl;
+            cout << "*** You bought: " << stock[choice - 1]->getItemName() << ". " << endl;
+            cout << endl;
+            cout << "Thank you for shopping! Come back soon!" << endl;
             cout << endl;
             break;
         }
@@ -348,16 +390,14 @@ void shop() {
         }
     }
 
-    cout << endl;
-    cout << "Thank you for shopping! Come back soon!" << endl;
-    cout << endl;
-
 }
 
 void viewInventory() {
     cout << endl;
     vector<Item*> inventory = user.GetItems();
 
+    cout << endl;
+    cout << "_______________________________________________________________" << endl;
     cout << "You have " << user.GetMoney() << " gold." << endl;
     cout << endl;
 
@@ -382,7 +422,7 @@ void leaveTown() {
     cout << endl;
     int option = 0;
     while (option != 1 && option != 2) {
-        cout << "Are you sure you would like to leave town? ( 1:yes, 2:no )" << endl;
+        cout << "Are you sure you would like to leave " << currentLocation->getLocationName() << "? (1:yes, 2 : no)" << endl;
         cin >> option;
         cout << endl;
     }
@@ -391,8 +431,10 @@ void leaveTown() {
         currentNode = currentNode->getNext();
         if (currentNode != nullptr) {
             currentLocation = currentNode->getData();
+            cout << "_______________________________________________________________" << endl;
             cout << "Your quest takes you to " << currentLocation->getLocationName() << endl;
-            cout << currentLocation->getLocationDescription() << endl;
+            cout << endl;
+            readLongText(currentLocation->getLocationDescription());
             cout << endl;
         }
         else {
