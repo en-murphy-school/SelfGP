@@ -20,6 +20,8 @@ Player user;
 Node* currentNode;
 Location* currentLocation;
 bool finalLevel = false;
+void stealthBattle(int attack, int magic, int defense, int evasion);
+void attackBattle(int attack, int magic, int defense, int evasion);
 
 void sP(string text) {
 
@@ -376,6 +378,12 @@ void shop() {
             break;
         }
         if (choice >= 1 && choice <= stock.size()) {
+            if (user.GetMoney() < stock[choice - 1]->getItemCost()) {
+                cout << endl;
+                cout << "You don't have enough money for that!" << endl;
+                cout << endl;
+                break;
+            }
             addItem(stock[choice-1]);
             user.SetMoney(user.GetMoney() - stock[choice - 1]->getItemCost());
             cout << endl;
@@ -439,13 +447,101 @@ void leaveTown() {
         }
         else {
             //************************************************************************* Create final level from here
-            cout << "You have left the last location." << endl;
+            cout << "_______________________________________________________________" << endl;
+            cout << "You have left the last town, and move to the Beast's den." << endl;
             finalLevel = true;
         }
     }
     else {
         cout << "No current location set." << endl;
     }
+}
+
+
+void finalBattle() {
+    int attack=0;
+    int magic=0;
+    int defense=0;
+    int evasion=0;
+    int choice1;
+
+    vector<Item*> inventory = user.GetItems();
+    for (Item* item : inventory) {
+        Weapon* weapon = dynamic_cast<Weapon*>(item);
+        if (weapon != nullptr) {
+            attack += weapon->getAttack();
+            magic += weapon->getMagic();
+        }
+        else {
+            Armor* armor = dynamic_cast<Armor*>(item);
+            defense += armor->getDefense();
+            evasion += armor->getEvasion();
+        }
+    }
+
+    cout << endl;
+    cout << "You see your foe before you, the stature matching the picture on the bounty." << endl;
+    cout << "From the look of things, it seems you have 2 options." << endl;
+    cout << "1. Go with a more stealthy approach               2. Go with a garunteed hit attack" << endl;
+
+
+    while (true)
+    {
+        cout << endl;
+        cout << "Enter the number for the option you want" << endl;
+        if (!(cin >> choice1)) {
+            cout << endl;
+            cout << "Letters are not choices, you should know this by now." << endl;
+            cout << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
+        cout << endl;
+        if (choice1 == 1 || choice1 == 2) {
+            break;
+        }
+        else {
+            cout << "Please choose from the selectable options" << endl;
+        }
+    }
+
+    if (choice1 == 1) {
+        stealthBattle(attack,magic,defense,evasion);
+    }
+    else {
+        attackBattle(attack, magic, defense, evasion);
+    }
+}
+
+void stealthBattle(int attack, int magic, int defense, int evasion) {
+    cout << "stealthy" << endl;
+}
+
+void attackBattle(int attack, int magic, int defense, int evasion) {
+    cout << "attacky" << endl;
+}
+
+void printWin() {
+    cout << "\\ \\   / /          \\ \\        / (_)     | |" << endl;
+    cout << " \\ \\_/ /__  _   _   \\ \\  /\\  / / _ _ __ | |" << endl;
+    cout << "  \\   / _ \\| | | |   \\ \\/  \\/ / | | '_ \\| |" << endl;
+    cout << "   | | (_) | |_| |    \\  /\\  /  | | | | |_|" << endl;
+    cout << "   |_|\\___/ \\__,_|     \\/  \\/   |_|_| |_|(_)" << endl;
+
+    cout << endl << endl;
+    cout << "You have slain the beast, Pyutorr. His mountains of riches put the bounty reward to shame." << endl;
+    cout << "You now have all you need to live a life of pure luxury, in any kingdom that you please." << endl;
+}
+
+void printLoss() {
+    cout << "  _____                         ____                 " << endl;
+    cout << " / ____|                       / __ \\                " << endl;
+    cout << "| |  __  __ _ _ __ ___   ___  | |  | |_   _____ _ __ " << endl;
+    cout << "| | |_ |/ _` | '_ ` _ \\ / _ \\ | |  | \\ \\ / / _ \\ '__|" << endl;
+    cout << "| |__| | (_| | | | | | |  __/ | |__| |\\ V /  __/ |   " << endl;
+    cout << " \\_____|\\__,_|_| |_| |_|\\___|  \\____/  \\_/ \\___|_|   " << endl;
+    cout << "                                                    " << endl;
+    cout << "                                                    " << endl;
 }
 
 
@@ -502,9 +598,22 @@ int main() {
         }
     }
 
+
+    cout << endl;
+    cout << "You have finally reached the end of your quest. Hopefully all the items you have collected will help in this battle" << endl;
+    cout << endl;
+    finalBattle();
+    
    
-    cout << "start final battle here" << endl;
-   
+
+    cout << " _______ _                 _                           __             _____  _             _             _ " << endl;
+    cout << " |__   __| |               | |                         / _|           |  __ \\| |           (_)           | |" << endl;
+    cout << "    | |  | |__   __ _ _ __ | | __  _   _  ___  _   _  | |_ ___  _ __  | |__) | | __ _ _   _ _ _ __   __ _| |" << endl;
+    cout << "    | |  | '_ \\ / _` | '_ \\| |/ / | | | |/ _ \\| | | | |  _/ _ \\| '__| |  ___/| |/ _` | | | | | '_ \\ / _` | |" << endl;
+    cout << "    | |  | | | | (_| | | | |   <  | |_| | (_) | |_| | | || (_) | |    | |    | | (_| | |_| | | | | | (_| |_|" << endl;
+    cout << "    |_|  |_| |_|\\__,_|_| |_|_|\\_\\  \\__, |\\___/ \\__,_| |_| \\___/|_|    |_|    |_|\\__,_|\\__, |_|_| |_|\\__, (_) " << endl;
+    cout << "                                    __/ |                                              __/ |         __/ |  " << endl;
+    cout << "                                   |___/                                              |___/         |___/   " << endl;
 
     return 0;
 }
