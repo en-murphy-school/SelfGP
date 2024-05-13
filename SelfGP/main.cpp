@@ -20,8 +20,11 @@ Player user;
 Node* currentNode;
 Location* currentLocation;
 bool finalLevel = false;
+void printStats(int attack, int magic, int defense, int evasion);
 void stealthBattle(int attack, int magic, int defense, int evasion);
 void attackBattle(int attack, int magic, int defense, int evasion);
+void printWin();
+void printLoss();
 
 void sP(string text) {
 
@@ -458,6 +461,35 @@ void leaveTown() {
 }
 
 
+int get12Choice() {
+    int choice;
+    while (true)
+    {
+        cout << endl;
+        cout << "Enter the number for the option you want" << endl;
+        if (!(cin >> choice)) {
+            cout << endl;
+            cout << "Letters are not choices, you should know this by now." << endl;
+            cout << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
+        cout << endl;
+        if (choice == 1 || choice == 2) {
+            break;
+        }
+        else {
+            cout << "Please choose from the selectable options" << endl;
+        }
+    }
+
+    return choice;
+}
+int getRand() {
+    int randomNumber = rand() % 20 + 1;
+    return randomNumber;
+}
+
 void finalBattle() {
     int attack=0;
     int magic=0;
@@ -479,31 +511,21 @@ void finalBattle() {
         }
     }
 
+    attack /= locationsList.Size();
+    magic /= locationsList.Size();
+    defense /= locationsList.Size();
+    evasion /= locationsList.Size();
+
+    cout << endl;
+    cout << "As you take one final look at your gear, you think to yourself: " << endl;
+    printStats(attack, magic, defense, evasion);
+
     cout << endl;
     cout << "You see your foe before you, the stature matching the picture on the bounty." << endl;
     cout << "From the look of things, it seems you have 2 options." << endl;
-    cout << "1. Go with a more stealthy approach               2. Go with a garunteed hit attack" << endl;
+    cout << "1. Go with a more stealthy approach               2. Go with a guaranteed hit attack" << endl;
 
-
-    while (true)
-    {
-        cout << endl;
-        cout << "Enter the number for the option you want" << endl;
-        if (!(cin >> choice1)) {
-            cout << endl;
-            cout << "Letters are not choices, you should know this by now." << endl;
-            cout << endl;
-            cin.clear();
-            cin.ignore(1000, '\n');
-        }
-        cout << endl;
-        if (choice1 == 1 || choice1 == 2) {
-            break;
-        }
-        else {
-            cout << "Please choose from the selectable options" << endl;
-        }
-    }
+    choice1 = get12Choice();
 
     if (choice1 == 1) {
         stealthBattle(attack,magic,defense,evasion);
@@ -513,15 +535,191 @@ void finalBattle() {
     }
 }
 
+void printStats(int attack, int magic, int defense, int evasion) {
+
+    cout << attack << endl;
+    cout << magic << endl;
+    cout << defense << endl;
+    cout << evasion << endl;
+
+
+
+    int stats[] = { attack, magic, defense, evasion};
+    string words[] = { "Attack", "Magic", "Defense", "Evasion" };
+
+    for (int i = 0; i < 4; i++) {
+        cout << "I feel like my " << words[i] << " is ";
+
+        if (stats[i]<8) {
+            cout << "Bad." << endl;
+        }
+        else if (stats[i]<12) {
+            cout << "Alright" << endl;
+        }
+        else if (stats[i]<20) {
+            cout << "Pretty Amazing" << endl;
+        }
+        else {
+            cout << "Perfect." << endl;
+        }
+    }
+}
+
 void stealthBattle(int attack, int magic, int defense, int evasion) {
-    cout << "stealthy" << endl;
+    int choice;
+    int choice2;
+    cout << endl;
+    cout << "You approach the sleeping beast cautiously, trying not to make a sound." << endl;
+    cout << ".   .   ." << endl;
+
+    if (evasion > 20) {
+        cout << "You manage to sneak up to the beast's weakest point, giving him a quick and precise end." << endl;
+        printWin();
+        return;
+    }
+    else {
+        cout << "Your footsteps accidentally disturb the beast's slumber, and it wakes up." << endl;
+        if (getRand() + defense < 20) {
+            cout << "The beast notices you and launches a surprise attack." << endl;
+            printLoss();
+            return;
+        }
+    }
+
+    cout << "With the beast now awake, it fixes its gaze upon you." << endl;
+    cout << "WHO DARES INTRUDE UPON MY DOMAIN? I, THE MIGHTY PYUTORR WILL NEVER FALL TO SUCH AN ATTEMPT" << endl;
+    cout << endl;
+    cout << "The beast prepares to cast a spell at you. What would you like to do?" << endl;
+    cout << "1. Try to dodge               2. Try to counter with magic" << endl;
+    choice = get12Choice();
+
+    if (choice == 1) {
+        if (getRand() + evasion < 22) {
+            cout << "Your attempt to dodge is unsuccessful." << endl;
+            printLoss();
+            return;
+        }
+        cout << "You manage to avoid Pyutorr's attack." << endl;
+    }
+    else {
+        if (getRand() + magic < 18) {
+            cout << "Your magic is not strong enough to counter the beast's spell." << endl;
+            printLoss();
+            return;
+        }
+        cout << "Your magic overpowers the beast's spell, dispelling it." << endl;
+    }
+    cout << endl;
+    cout << "After that last attack, Pyutorr is REALLY angry. He starts to charge up a stronger blast. you decide you NEED to finish him off before this attack comes out." << endl;
+    cout << "1. Try to finish him with an attack               2. Try to finish him with magic" << endl;
+    choice2 = get12Choice();
+    if (choice2 == 1) {
+        if (getRand() + attack > 20) {
+            cout << "Just in the nick of time, your weapon strikes into Pyutorr, making his attack impode on himself!" << endl;
+            printWin();
+            return;
+        }
+        else {
+            cout << "Your attack seems to just barely not stop him. And as Pyutorr fires his blast, your life flashes before your eyes." << endl;
+            printLoss();
+            return;
+        }
+    }
+    else {
+        if (getRand() + magic > 18) {
+            cout << "Just in the nick of time, your spell causes the blast Pyutorr was forming to combust." << endl;
+            printWin();
+            return;
+        }
+        else {
+            cout << "Your spell seems to just not do enough to the blast Pyutor was forming." << endl;
+            printLoss();
+            return;
+        }
+    }
 }
 
 void attackBattle(int attack, int magic, int defense, int evasion) {
-    cout << "attacky" << endl;
+    int choice;
+    int choice2;
+    cout << endl;
+    cout << "You charge at the beast, weapon in hand, and " << endl;
+    cout << ".   .   ." << endl;
+    if (attack > 20) {
+        cout << "IT HITS. Catching the beast off gaurd, you kill him instantly." << endl;
+        printWin();
+        return;
+    }
+    else if(getRand() + attack>15){
+        cout << "Your attack hits, however, the beast is still alive and now, wakes up angerly. " << endl;
+    }
+    else {
+        cout << "Your attack bounces right off the beast. He is now woken with the threat of danger." << endl;
+        if (getRand() + defense < 20) {
+            cout << "He instantly slams you with its giant tail, knocking you unconcious. " << endl;
+            printLoss();
+            return;
+        }
+    }
+
+    cout << "With the beast now awake, he speaks to you." << endl;
+    cout << "HOW DARE YOU TRY AND SLAIN ME, FOR I, THE GREAT PYUTORR WAS ENJOYING A NICE REST." << endl;
+    cout << endl;
+    cout << "Pyutorr then sends fire in your direction immediately, giving you no time to prepare. What would you like to do?" << endl;
+    cout << "1. Try to dodge               2. Try to tank it" << endl;
+    choice = get12Choice();
+
+    if (choice == 1) {
+        if (getRand() + evasion < 22) {
+            cout << "You were unable to dodge Pyutorr's flames." << endl;
+            printLoss();
+            return;
+        }
+        cout << "You barely manage to dodge Pyutorr's attack." << endl;
+    }
+    else {
+        if (getRand() + defense < 22) {
+            cout << "You were unable to withstand the hit. " << endl;
+            printLoss();
+            return;
+        }
+        cout << "You barely seem to be holding on after that last attack, but alive nonetheless." << endl;
+    }
+
+    cout << endl;
+    cout << "After that last attack, Pyutorr is REALLY angry. He starts to charge up a stronger blast. you decide you NEED to finish him off before this attack comes out." << endl;
+    cout << "1. Try to finish him with an attack               2. Try to finish him with magic" << endl;
+    choice2 = get12Choice();
+
+    if (choice2 == 1) {
+        if (getRand() + attack > 20) {
+            cout << "Just in the nick of time, your weapon strikes into Pyutorr, making his attack impode on himself!" << endl;
+            printWin();
+            return;
+        }
+        else {
+            cout << "Your attack seems to just barely not stop him. And as Pyutorr fires his blast, your life flashes before your eyes." << endl;
+            printLoss();
+            return;
+        }
+    }
+    else {
+        if (getRand() + magic > 18) {
+            cout << "Just in the nick of time, your spell causes the blast Pyutorr was forming to combust." << endl;
+            printWin();
+            return;
+        }
+        else {
+            cout << "Your spell seems to just not do enough to the blast Pyutor was forming." << endl;
+            printLoss();
+            return;
+        }
+    }
 }
 
 void printWin() {
+    cout << "_______________________________________________" << endl;
+    cout << endl;
     cout << "\\ \\   / /          \\ \\        / (_)     | |" << endl;
     cout << " \\ \\_/ /__  _   _   \\ \\  /\\  / / _ _ __ | |" << endl;
     cout << "  \\   / _ \\| | | |   \\ \\/  \\/ / | | '_ \\| |" << endl;
@@ -534,6 +732,8 @@ void printWin() {
 }
 
 void printLoss() {
+    cout << "____________________________________________________" << endl;
+    cout << endl;
     cout << "  _____                         ____                 " << endl;
     cout << " / ____|                       / __ \\                " << endl;
     cout << "| |  __  __ _ _ __ ___   ___  | |  | |_   _____ _ __ " << endl;
@@ -546,7 +746,7 @@ void printLoss() {
 
 
 int main() {
-    
+    srand(time(nullptr));
     int choice;
 
     generateItems();
@@ -598,14 +798,12 @@ int main() {
         }
     }
 
-
     cout << endl;
     cout << "You have finally reached the end of your quest. Hopefully all the items you have collected will help in this battle" << endl;
     cout << endl;
+
     finalBattle();
     
-   
-
     cout << " _______ _                 _                           __             _____  _             _             _ " << endl;
     cout << " |__   __| |               | |                         / _|           |  __ \\| |           (_)           | |" << endl;
     cout << "    | |  | |__   __ _ _ __ | | __  _   _  ___  _   _  | |_ ___  _ __  | |__) | | __ _ _   _ _ _ __   __ _| |" << endl;
