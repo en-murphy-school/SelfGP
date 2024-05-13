@@ -19,6 +19,11 @@ ARMOR BootsOfSpeed Boots-to-outpace-all-foes. 270 true 10 2
 ARMOR ShieldOfDefiance A-shield-that-defies-all-attacks. 380 true 18 5
 ARMOR GreavesOfProtection Greaves-to-ward-off-harm. 330 true 16 4
 
-ARMOR ScuteChestplate A-piece-of-scute-well-suited-for-Defence.-Though,-much-like-a-turtle,-it-will-slow-you-down. 250 true 30 -5
+
+ARMOR SteelHelmet A-steel-helmet-used-for-battle.-However,-it's-a-VERY-heavy-helmet. 180 true 20 -5
+WEAPON BattleAxe A-sharpened,-two-sided-axe.Fantastic-for-damage,-but-it's-just-ordinary-steel. 250 true 30 0
+ARMOR Papakha A-fur-hat-made-of-sheepskin.-Provides-minimal-defense,-but-blends-in-with-the-surroundings-surprisingly-well. 150 true 0 30
+
+ARMOR ScuteChestplate A-piece-of-scute-well-suited-for-Defense.-Though,-much-like-a-turtle,-it-will-slow-you-down. 250 true 30 -5
 WEAPON StaffOfTheSea A-staff-imbued-with-water-commanding-magic.-Allows-the-user-to-summon-water-at-will.-It-is-rather-flimsy-though. 300 true 0 30
 WEAPON MagicNautilousShell A-shell-with-the-ability-to-call-the-power-of-the-sea. 220 true 2 20

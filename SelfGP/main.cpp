@@ -27,14 +27,10 @@ void printWin();
 void printLoss();
 
 void sP(string text) {
-
-    for (int i = 0; i < text[i]; i++) {
-
+    for (int i = 0; i < text.length(); i++) {
         cout << text[i];
-
-        Sleep(50);
+        Sleep(20);
     }
-    cout << endl;
 }
 
 string formatName(const string& inputName) {
@@ -135,14 +131,14 @@ void generateItems() {
             name = formatName(name);
             description = formatDescription(description);
             Weapon* newWeapon = new Weapon(name, description, cost, tf, value1, value2);
-            cout << "Weapon Made" << endl;
+            //cout << "Weapon Made" << endl;
             items[itemCount] = newWeapon;
             itemCount++;
         } else if (type == "ARMOR") {
             name = formatName(name);
             description = formatDescription(description);
             Armor* newArmor = new Armor(name, description, cost, tf, value1, value2);
-            cout << "Armor Made" << endl;
+            //cout << "Armor Made" << endl;
             items[itemCount] = newArmor;
             itemCount++;
         }
@@ -188,7 +184,7 @@ void generateLocations() {
         Location* testLoc = new Location(name, description, explore, tf, storeList, hiddenList);
         Node* newNode = new Node(testLoc);
         locationsList.pushBack(newNode);
-        cout << "Location Made" << endl;
+        //cout << "Location Made" << endl;
     }
 }
 
@@ -196,8 +192,8 @@ void generatePlayer() {
     string name;
     int difficulty;
     int money;
-
-    cout << "_______________________________________________________________________________" << endl;
+    sP("_______________________________________________________________________________");
+    cout << endl;
     cout << "_______________________________________________________________________________" << endl;
     cout << endl;
     cout << "   _____                      _        _______                  _           " << endl;
@@ -208,28 +204,30 @@ void generatePlayer() {
     cout << "  \\_____\\___/|_| |_|___/\\___/|_|\\___|    |_|_|  \\__,_| \\_/ \\___|_|\\___|_|   " << endl;
     cout << "                                                                            " << endl;
     cout << "_______________________________________________________________________________" << endl;
-    cout << "_______________________________________________________________________________" << endl;
+    sP("_______________________________________________________________________________");
+    cout << endl;
     cout << endl;
 
-
-
-
-    
-    //sP("Welcome message here!");
-    //sP("What is your name traveler?");
-
-    cout << "Welcome dear Traveler to our humble kingdom of Cline. A kingdom reaching as far \nas the eye can see. A kingdom which has a wide variety of scenery and towns." << endl;
+    sP("Welcome dear Traveler to our humble kingdom of Cline. A kingdom reaching as far \nas the eye can see. A kingdom which has a wide variety of scenery and towns.");
     cout << endl;
-    cout << "Ah, who am I kidding. I know you aren't into any of that. Only looking for rough \nand tough adventure. I get it, I used to feel the same when I was young. \n\nNow tell me, what is your name?" << endl;
+    cout << endl;
+    sP("Ah, who am I kidding. I know you aren't into any of that. Only looking for rough \nand tough adventure. I get it, I used to feel the same when I was young. \n\nNow tell me, what is your name?");
+    cout << endl;
     
     cin >> name;
     user.SetName(name);
     cout << endl;
-    cout << "Alright " << user.GetName() << " the 'Eventual' great. Let me get you situated for your journey." << endl << endl;
+    sP("Alright " + user.GetName() + " the 'Eventual' great. Let me get you situated for your journey.");
+    cout << endl;
+    cout << endl;
     while (true)
     {
-        cout << "Which of the bounties would you like to try and take on?" << endl << "Easy(1), Medium(2), Hard(3)" << endl;
-        cout << "Enter your Choice: ";
+        sP("Which of the bounties would you like to try and take on?");
+        cout << endl;
+        sP("Easy(1), Medium(2), Hard(3)");
+        cout << endl;
+        sP("Enter your Choice: ");
+        cout << endl;
         if (!(cin >> difficulty)) {
             cout << endl;
             cout << "Letters are not difficulties." << endl;
@@ -264,28 +262,38 @@ void addItem(Item* item) {
 
 
 void firstIntro() {
-    
+
     cout << endl;
-    cout << user.GetName() << "...     Are you sure you're ready to take this quest? It looks like a tough one." << endl;
-    cout << "" << endl;
-    cout << "Either way, if it's adventure you want, you are sure to get it." << endl;
-    cout << "Here, take some gold. Im sure it will help you during your travels." << endl;
+    sP(user.GetName() + "...     Are you sure you're ready to take this quest? It looks like a tough one.");
     cout << endl;
-    cout << "*** You gained " << user.GetMoney() << " gold." << endl;
+    cout << endl;
+    sP("Either way, if it's adventure you want, you are sure to get it.");
+    cout << endl;
+    sP("Here, take some gold. Im sure it will help you during your travels.");
+    cout << endl;
+    cout << endl;
+    sP("*** You gained " + to_string(user.GetMoney()) + " gold.");
+    cout << endl;
     cout << "" << endl;
     cout << "" << endl;
-    cout << "Your adventure begins in " << currentLocation->getLocationName() << endl;
+    sP("Your adventure begins in " + currentLocation->getLocationName());
+    cout << endl;
     cout << currentLocation->getLocationDescription() << endl;
     cout << "" << endl;
 }
 
 void getOptions() {
     cout << "**************************************" << endl;
-    cout << "What would you like to do?" << endl;
-    cout << "1. Explore " << currentLocation->getLocationName() << "." << endl;
-    cout << "2. Enter " << currentLocation->getLocationName() << "'s shop." << endl;
-    cout << "3. View your Inventory." << endl;
-    cout << "4. Leave " << currentLocation->getLocationName() << "." << endl;
+    sP("What would you like to do?");
+    cout << endl;
+    sP("1. Explore " + currentLocation->getLocationName() + ".");
+    cout << endl;
+    sP("2. Enter " + currentLocation->getLocationName() + "'s shop.");
+    cout << endl;
+    sP("3. View your Inventory.");
+    cout << endl;
+    sP("4. Leave " + currentLocation->getLocationName() + ".");
+    cout << endl;
     cout << "**************************************" << endl;
     cout << endl;
 }
@@ -317,13 +325,15 @@ void explore() {
             {
                 addItem(item);
                 cout << endl;
-                cout << "*** You obtained: " << item->getItemName() << endl;
+                sP("*** You obtained: " + item->getItemName());
+                cout << endl;
                 cout << endl;
                 item->setAvailability(false);
             }
             else {
                 cout << endl;
-                cout << "You've already gathered all you can." << endl;
+                sP("You've already gathered all you can.");
+                cout << endl;
                 cout << endl;
             }
         }
@@ -335,13 +345,15 @@ void explore() {
             {
                 addItem(item);
                 cout << endl;
-                cout << "*** You obtained: " << item->getItemName() << endl;
+                sP("*** You obtained: " + item->getItemName());
+                cout << endl;
                 cout << endl;
                 item->setAvailability(false);
             }
             else {
                 cout << endl;
-                cout << "You've already gathered all you can." << endl;
+                sP("You've already gathered all you can.");
+                cout << endl;
                 cout << endl;
             }
         }
@@ -355,18 +367,22 @@ void shop() {
     int choice;
 
     cout << endl;
-    cout << "Welcome to " << currentLocation->getLocationName() << "'s shop." << endl;
+    sP("Welcome to " + currentLocation->getLocationName() + "'s shop.");
+    cout << endl;
     while (true) {
         cout << "---------------------------------------------------------------" << endl;
 
         for (Item* item : stock) {
-            cout << counter << ". " << item->getItemName() << ": " << item->getItemDescription() << endl;
-            cout << "Cost: " << item->getItemCost() << " gold." << endl;
+            sP(to_string(counter) + ". " + item->getItemName() + ": " + item->getItemDescription());
+            cout << endl;
+            sP("Cost: " + to_string(item->getItemCost()) + " gold.");
+            cout << endl;
             cout << "---------------------------------------------------------------" << endl;
             counter++;
         }
         cout << endl;
-        cout << "Select the number that corresponds to the item you would like to buy. Or, press '0' to leave." << endl;
+        sP("Select the number that corresponds to the item you would like to buy. Or, press '0' to leave.");
+        cout << endl;
         if (!(cin >> choice)) {
             cout << endl;
             cout << "Letters are not numbers." << endl;
@@ -376,28 +392,33 @@ void shop() {
         }
         if (choice == 0) {
             cout << endl;
-            cout << "You left the shop." << endl;
+            sP("You left the shop.");
+            cout << endl;
             cout << endl;
             break;
         }
         if (choice >= 1 && choice <= stock.size()) {
             if (user.GetMoney() < stock[choice - 1]->getItemCost()) {
                 cout << endl;
-                cout << "You don't have enough money for that!" << endl;
+                sP("You don't have enough money for that!");
+                cout << endl;
                 cout << endl;
                 break;
             }
             addItem(stock[choice-1]);
             user.SetMoney(user.GetMoney() - stock[choice - 1]->getItemCost());
             cout << endl;
-            cout << "*** You bought: " << stock[choice - 1]->getItemName() << ". " << endl;
+            sP("*** You bought: " + stock[choice - 1]->getItemName() + ". ");
             cout << endl;
-            cout << "Thank you for shopping! Come back soon!" << endl;
+            cout << endl;
+            sP("Thank you for shopping! Come back soon!");
+            cout << endl;
             cout << endl;
             break;
         }
         else {
             cout << "Please choose from the selectable options" << endl;
+            counter = 1;
         }
     }
 
@@ -409,19 +430,24 @@ void viewInventory() {
 
     cout << endl;
     cout << "_______________________________________________________________" << endl;
-    cout << "You have " << user.GetMoney() << " gold." << endl;
+    sP("You have " + to_string(user.GetMoney()) + " gold.");
+    cout << endl;
     cout << endl;
 
     if (inventory.empty()) {
-        cout << "Your inventory is empty... Womp Womp" << endl;
+        sP("Your inventory is empty... Womp Womp");
+        cout << endl;
         cout << endl;
     }
     else {
-        cout << "Inventory: " << endl;
+        sP("Inventory: ");
+        cout << endl;
         cout << "---------------------------------------------------------------" << endl;
         for (Item* item : inventory) {
-            cout << "Name: " << item->getItemName() << "." << endl;
-            cout << "Description: " << item->getItemDescription() << "." << endl;
+            sP("Name: " + item->getItemName() + ".");
+            cout << endl;
+            sP("Description: " + item->getItemDescription());
+            cout << endl;
             cout << endl;
             cout << "---------------------------------------------------------------" << endl;
         }
@@ -433,7 +459,8 @@ void leaveTown() {
     cout << endl;
     int option = 0;
     while (option != 1 && option != 2) {
-        cout << "Are you sure you would like to leave " << currentLocation->getLocationName() << "? (1:yes, 2 : no)" << endl;
+        sP("Are you sure you would like to leave " + currentLocation->getLocationName() + "? (1:yes, 2 : no)");
+        cout << endl;
         cin >> option;
         cout << endl;
     }
@@ -442,8 +469,10 @@ void leaveTown() {
         currentNode = currentNode->getNext();
         if (currentNode != nullptr) {
             currentLocation = currentNode->getData();
-            cout << "_______________________________________________________________" << endl;
-            cout << "Your quest takes you to " << currentLocation->getLocationName() << endl;
+            cout << "______________________________________________________________" << endl;
+            cout << endl;
+            sP("Your quest takes you to " + currentLocation->getLocationName());
+            cout << endl;
             cout << endl;
             readLongText(currentLocation->getLocationDescription());
             cout << endl;
@@ -517,13 +546,17 @@ void finalBattle() {
     evasion /= locationsList.Size();
 
     cout << endl;
-    cout << "As you take one final look at your gear, you think to yourself: " << endl;
+    sP("As you take one final look at your gear, you think to yourself: ");
+    cout << endl;
     printStats(attack, magic, defense, evasion);
 
     cout << endl;
-    cout << "You see your foe before you, the stature matching the picture on the bounty." << endl;
-    cout << "From the look of things, it seems you have 2 options." << endl;
-    cout << "1. Go with a more stealthy approach               2. Go with a guaranteed hit attack" << endl;
+    sP("You see your foe before you, the stature matching the picture on the bounty.");
+    cout << endl;
+    sP("From the look of things, it seems you have 2 options.");
+    cout << endl;
+    sP("1. Go with a more stealthy approach               2. Go with a guaranteed hit attack");
+    cout << endl;
 
     choice1 = get12Choice();
 
@@ -536,20 +569,11 @@ void finalBattle() {
 }
 
 void printStats(int attack, int magic, int defense, int evasion) {
-
-    cout << attack << endl;
-    cout << magic << endl;
-    cout << defense << endl;
-    cout << evasion << endl;
-
-
-
     int stats[] = { attack, magic, defense, evasion};
     string words[] = { "Attack", "Magic", "Defense", "Evasion" };
 
     for (int i = 0; i < 4; i++) {
-        cout << "I feel like my " << words[i] << " is ";
-
+        sP("I feel like my " + words[i] + " is ");
         if (stats[i]<8) {
             cout << "Bad." << endl;
         }
@@ -569,70 +593,88 @@ void stealthBattle(int attack, int magic, int defense, int evasion) {
     int choice;
     int choice2;
     cout << endl;
-    cout << "You approach the sleeping beast cautiously, trying not to make a sound." << endl;
-    cout << ".   .   ." << endl;
+    sP("You approach the sleeping beast cautiously, trying not to make a sound.");
+    cout << endl;
+    sP(".   .   .");
+    cout << endl;
 
     if (evasion > 20) {
-        cout << "You manage to sneak up to the beast's weakest point, giving him a quick and precise end." << endl;
+        sP("You manage to sneak up to the beast's weakest point, giving him a quick and precise end.");
+        cout << endl;
         printWin();
         return;
     }
     else {
-        cout << "Your footsteps accidentally disturb the beast's slumber, and it wakes up." << endl;
+        sP("Your footsteps accidentally disturb the beast's slumber, and it wakes up.");
+        cout << endl;
         if (getRand() + defense < 20) {
-            cout << "The beast notices you and launches a surprise attack." << endl;
+            sP("The beast notices you and launches an unreactable attack.");
+            cout << endl;
             printLoss();
             return;
         }
     }
-
-    cout << "With the beast now awake, it fixes its gaze upon you." << endl;
-    cout << "WHO DARES INTRUDE UPON MY DOMAIN? I, THE MIGHTY PYUTORR WILL NEVER FALL TO SUCH AN ATTEMPT" << endl;
+    sP("With the beast now awake, it fixes its gaze upon you.");
+    cout << endl << endl;
+    sP("WHO DARES INTRUDE UPON MY DOMAIN? I, THE MIGHTY PYUTORR WILL NEVER FALL TO SUCH AN ATTEMPT");
     cout << endl;
-    cout << "The beast prepares to cast a spell at you. What would you like to do?" << endl;
-    cout << "1. Try to dodge               2. Try to counter with magic" << endl;
+    cout << endl;
+    sP("The beast prepares to cast a spell at you rapidly. Quick! What would you like to do?");
+    cout << endl;
+    sP("1. Try to dodge               2. Try to counter with magic");
+    cout << endl << endl;
     choice = get12Choice();
 
     if (choice == 1) {
         if (getRand() + evasion < 22) {
-            cout << "Your attempt to dodge is unsuccessful." << endl;
+            sP("Your attempt to dodge is unsuccessful.");
+            cout << endl;
             printLoss();
             return;
         }
-        cout << "You manage to avoid Pyutorr's attack." << endl;
+        sP("You manage to avoid Pyutorr's attack.");
+        cout << endl;
     }
     else {
         if (getRand() + magic < 18) {
-            cout << "Your magic is not strong enough to counter the beast's spell." << endl;
+            sP("Your magic is not strong enough to counter the beast's spell.");
+            cout << endl;
             printLoss();
             return;
         }
-        cout << "Your magic overpowers the beast's spell, dispelling it." << endl;
+        sP("Your magic overpowers the beast's spell, dispelling it.");
+        cout << endl;
     }
     cout << endl;
-    cout << "After that last attack, Pyutorr is REALLY angry. He starts to charge up a stronger blast. you decide you NEED to finish him off before this attack comes out." << endl;
-    cout << "1. Try to finish him with an attack               2. Try to finish him with magic" << endl;
+    sP("After that last attack, Pyutorr is REALLY angry. He starts to charge up a stronger blast. you decide you NEED to finish him off before this attack comes out.");
+    cout << endl;
+    sP("1. Try to finish him with an attack               2. Try to finish him with magic");
+    cout << endl;
     choice2 = get12Choice();
     if (choice2 == 1) {
         if (getRand() + attack > 20) {
-            cout << "Just in the nick of time, your weapon strikes into Pyutorr, making his attack impode on himself!" << endl;
+            sP("Just in the nick of time, your weapon strikes into Pyutorr, making his attack impode on himself!");
+            cout << endl;
             printWin();
             return;
         }
         else {
-            cout << "Your attack seems to just barely not stop him. And as Pyutorr fires his blast, your life flashes before your eyes." << endl;
+            sP("Your attack seems to just barely not stop him. And as Pyutorr fires his blast, your life flashes before your eyes.");
+            cout << endl;
             printLoss();
             return;
         }
     }
     else {
         if (getRand() + magic > 18) {
-            cout << "Just in the nick of time, your spell causes the blast Pyutorr was forming to combust." << endl;
+            sP("Just in the nick of time, your spell causes the blast Pyutorr was forming to combust.");
+            cout << endl;
             printWin();
             return;
         }
         else {
-            cout << "Your spell seems to just not do enough to the blast Pyutor was forming." << endl;
+            sP("Your spell seems to just not do enough to the blast Pyutor was forming.");
+            cout << endl;
             printLoss();
             return;
         }
@@ -643,74 +685,93 @@ void attackBattle(int attack, int magic, int defense, int evasion) {
     int choice;
     int choice2;
     cout << endl;
-    cout << "You charge at the beast, weapon in hand, and " << endl;
-    cout << ".   .   ." << endl;
+    sP("You charge at the beast, weapon in hand, and ");
+    cout << endl;
+    sP(".   .   .");
+    cout << endl;
     if (attack > 20) {
-        cout << "IT HITS. Catching the beast off gaurd, you kill him instantly." << endl;
+        sP("IT HITS. Catching the beast off gaurd, you kill him instantly.");
+        cout << endl;
         printWin();
         return;
     }
     else if(getRand() + attack>15){
-        cout << "Your attack hits, however, the beast is still alive and now, wakes up angerly. " << endl;
+        sP("Your attack hits, however, the beast is still alive and now, wakes up angerly. ");
+        cout << endl;
     }
     else {
-        cout << "Your attack bounces right off the beast. He is now woken with the threat of danger." << endl;
+        sP("Your attack bounces right off the beast. He is now woken with the threat of danger.");
+        cout << endl;
         if (getRand() + defense < 20) {
-            cout << "He instantly slams you with its giant tail, knocking you unconcious. " << endl;
+            sP("He instantly slams you with its giant tail, knocking you unconcious. ");
+            cout << endl;
             printLoss();
             return;
         }
     }
-
-    cout << "With the beast now awake, he speaks to you." << endl;
-    cout << "HOW DARE YOU TRY AND SLAIN ME, FOR I, THE GREAT PYUTORR WAS ENJOYING A NICE REST." << endl;
+    sP("With the beast now awake, he speaks to you.");
     cout << endl;
-    cout << "Pyutorr then sends fire in your direction immediately, giving you no time to prepare. What would you like to do?" << endl;
-    cout << "1. Try to dodge               2. Try to tank it" << endl;
+    sP("HOW DARE YOU TRY AND SLAIN ME, FOR I, THE GREAT PYUTORR WAS ENJOYING A NICE REST.");
+    cout << endl;
+    cout << endl;
+    sP("Pyutorr then sends fire in your direction immediately, giving you no time to prepare. What would you like to do?");
+    cout << endl;
+    sP("1. Try to dodge               2. Try to tank it");
+    cout << endl;
     choice = get12Choice();
 
     if (choice == 1) {
         if (getRand() + evasion < 22) {
-            cout << "You were unable to dodge Pyutorr's flames." << endl;
+            sP("You were unable to dodge Pyutorr's flames.");
+            cout << endl;
             printLoss();
             return;
         }
-        cout << "You barely manage to dodge Pyutorr's attack." << endl;
+        sP("You barely manage to dodge Pyutorr's attack.");
+        cout << endl;
     }
     else {
         if (getRand() + defense < 22) {
-            cout << "You were unable to withstand the hit. " << endl;
+            sP("You were unable to withstand the hit. ");
+            cout << endl;
             printLoss();
             return;
         }
-        cout << "You barely seem to be holding on after that last attack, but alive nonetheless." << endl;
+        sP("You barely seem to be holding on after that last attack, but alive nonetheless.");
+        cout << endl;
     }
 
     cout << endl;
-    cout << "After that last attack, Pyutorr is REALLY angry. He starts to charge up a stronger blast. you decide you NEED to finish him off before this attack comes out." << endl;
-    cout << "1. Try to finish him with an attack               2. Try to finish him with magic" << endl;
+    sP("After that last attack, Pyutorr is REALLY angry. He starts to charge up a stronger blast. you decide you NEED to finish him off before this attack comes out.");
+    cout << endl;
+    sP("1. Try to finish him with an attack               2. Try to finish him with magic");
+    cout << endl;
     choice2 = get12Choice();
 
     if (choice2 == 1) {
         if (getRand() + attack > 20) {
-            cout << "Just in the nick of time, your weapon strikes into Pyutorr, making his attack impode on himself!" << endl;
+            sP("Just in the nick of time, your weapon strikes into Pyutorr, making his attack impode on himself!");
+            cout << endl;
             printWin();
             return;
         }
         else {
-            cout << "Your attack seems to just barely not stop him. And as Pyutorr fires his blast, your life flashes before your eyes." << endl;
+            sP("Your attack seems to just barely not stop him. And as Pyutorr fires his blast, your life flashes before your eyes.");
+            cout << endl;
             printLoss();
             return;
         }
     }
     else {
         if (getRand() + magic > 18) {
-            cout << "Just in the nick of time, your spell causes the blast Pyutorr was forming to combust." << endl;
+            sP("Just in the nick of time, your spell causes the blast Pyutorr was forming to combust.");
+            cout << endl;
             printWin();
             return;
         }
         else {
-            cout << "Your spell seems to just not do enough to the blast Pyutor was forming." << endl;
+            sP("Your spell seems to just not do enough to the blast Pyutor was forming.");
+            cout << endl;
             printLoss();
             return;
         }
@@ -718,21 +779,26 @@ void attackBattle(int attack, int magic, int defense, int evasion) {
 }
 
 void printWin() {
-    cout << "_______________________________________________" << endl;
+    sP("____________________________________________________");
+    cout << endl;
     cout << endl;
     cout << "\\ \\   / /          \\ \\        / (_)     | |" << endl;
     cout << " \\ \\_/ /__  _   _   \\ \\  /\\  / / _ _ __ | |" << endl;
     cout << "  \\   / _ \\| | | |   \\ \\/  \\/ / | | '_ \\| |" << endl;
     cout << "   | | (_) | |_| |    \\  /\\  /  | | | | |_|" << endl;
     cout << "   |_|\\___/ \\__,_|     \\/  \\/   |_|_| |_|(_)" << endl;
-
+    sP("____________________________________________________");
+    cout << endl;
     cout << endl << endl;
-    cout << "You have slain the beast, Pyutorr. His mountains of riches put the bounty reward to shame." << endl;
-    cout << "You now have all you need to live a life of pure luxury, in any kingdom that you please." << endl;
+    sP("You have slain the beast, Pyutorr. His mountains of riches put the bounty reward to shame.");
+    cout << endl;
+    sP("You now have all you need to live a life of pure luxury, in any kingdom that you please.");
+    cout << endl;
 }
 
 void printLoss() {
-    cout << "____________________________________________________" << endl;
+    sP("____________________________________________________");
+    cout << endl;
     cout << endl;
     cout << "  _____                         ____                 " << endl;
     cout << " / ____|                       / __ \\                " << endl;
@@ -742,6 +808,8 @@ void printLoss() {
     cout << " \\_____|\\__,_|_| |_| |_|\\___|  \\____/  \\_/ \\___|_|   " << endl;
     cout << "                                                    " << endl;
     cout << "                                                    " << endl;
+    sP("____________________________________________________");
+    cout << endl;
 }
 
 
@@ -768,7 +836,9 @@ int main() {
 
     while (finalLevel == false) {
         getOptions();
-        cout << "Pick an option with numbers 1-4." << endl;
+
+        sP("Pick an option with numbers 1-4.");
+        cout << endl;
         if (!(cin >> choice)) { 
             cout << endl;
             cout << "Why not press a number you fool." << endl;
@@ -799,7 +869,7 @@ int main() {
     }
 
     cout << endl;
-    cout << "You have finally reached the end of your quest. Hopefully all the items you have collected will help in this battle" << endl;
+    sP("You have finally reached the end of your quest. Hopefully all the items you have collected will help in this battle");
     cout << endl;
 
     finalBattle();
