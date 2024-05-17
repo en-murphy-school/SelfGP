@@ -14,6 +14,7 @@ protected:
 	int cost;
 	bool availability;
 public:
+	virtual ~Item() {}
 	Item();
 	Item(const string& name, const string& description, const int& cost, const bool& availability);
 	string getItemName() const;
