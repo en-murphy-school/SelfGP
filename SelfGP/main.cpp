@@ -10,31 +10,38 @@
 #include "LinkedList.h"
 #include "Player.h"
 
-
 using namespace std;
 
-
+// Create an array of items to look through
 Item* items[100];
 int itemCount = 0;
+// Create a linked list
 LinkedList locationsList;
+// Create a player
 Player user;
+// Create global variables for nodes and locations, allowing us to pull info across all functions below.
 Node* currentNode;
 Location* currentLocation;
+// Keeps the wild loop in main going
 bool finalLevel = false;
+// Initializations for functions that have no class.
+// Observation: These look VERY similar to what .h files look like. Seing as main doesnt have it, it makes sense to be here.
 void printStats(int attack, int magic, int defense, int evasion);
 void stealthBattle(int attack, int magic, int defense, int evasion);
 void attackBattle(int attack, int magic, int defense, int evasion);
 void printWin();
 void printLoss();
 
+// Operator << overload to allow us to set a special word to use it (mainly sout)
 class SlowStream {
 public:
     SlowStream(int delay_ms) : delay_(delay_ms) {}
 
     // Overload the << operator for SlowStream
     SlowStream& operator<<(const string& text) {
-        for (char c : text) {
-            cout << c << flush;  // Print each character to cout
+        for (char c : text) 
+        {
+            cout << c << flush;  
             this_thread::sleep_for(chrono::milliseconds(delay_));
         }
         return *this;
@@ -44,6 +51,7 @@ private:
     int delay_;
 };
 
+// Takes a name and adds spaces where caps are
 string formatName(const string& inputName) {
     string formattedName;
     for (char c : inputName)
@@ -57,6 +65,7 @@ string formatName(const string& inputName) {
     return formattedName;
 }
 
+// Takes a description ad replaces -'s with spaces
 string formatDescription(const string& inputDescription) {
     string formattedDescription;
     for (char c : inputDescription) 
@@ -72,6 +81,7 @@ string formatDescription(const string& inputDescription) {
     return formattedDescription;
 }
 
+// Turns a STRING list of items given by locations and looks for them IN our item list array, returning a vector
 vector<Item*> getItemList(string list) {
     vector<Item*> finalList;
 
@@ -95,6 +105,7 @@ vector<Item*> getItemList(string list) {
     return itemList;
 }
 
+// Meant to read text from files that are too long for 1 line, need MANUAL endl placements via '|'
 void readLongText(string text) {
     for (char c : text)
     {
@@ -108,7 +119,8 @@ void readLongText(string text) {
     cout << endl;
 }
 
-
+// Loads up the items.txt file and creates items with valid criteria, adding them to our item array
+// *** Inside is commented out code that is a test to see if the item was created successfully ***
 void generateItems() {
     ifstream inputFile("items.txt");
 
@@ -142,6 +154,7 @@ void generateItems() {
             name = formatName(name);
             description = formatDescription(description);
             Weapon* newWeapon = new Weapon(name, description, cost, tf, value1, value2);
+            //************************************************************************ Here is the test to see if weapon is made
             //cout << "Weapon Made" << endl;
             items[itemCount] = newWeapon;
             itemCount++;
@@ -149,6 +162,7 @@ void generateItems() {
             name = formatName(name);
             description = formatDescription(description);
             Armor* newArmor = new Armor(name, description, cost, tf, value1, value2);
+            //************************************************************************ Here is the test to see if armor is made
             //cout << "Armor Made" << endl;
             items[itemCount] = newArmor;
             itemCount++;
@@ -157,6 +171,8 @@ void generateItems() {
     inputFile.close();
 }
 
+// Loads up the locations.txt and creates locations using the criteria AND using "getItemList()" to create vectors for the stores and hidden items
+// *** Inside is commented out code that is a test to see if the location was created successfully ***
 void generateLocations() {
 
     ifstream inputFile("locations.txt");
@@ -195,10 +211,12 @@ void generateLocations() {
         Location* testLoc = new Location(name, description, explore, tf, storeList, hiddenList);
         Node* newNode = new Node(testLoc);
         locationsList.pushBack(newNode);
+        //************************************************************************ Here is the test for loaction
         //cout << "Location Made" << endl;
     }
 }
 
+// Creates the player by asking the user for text, and asking for the difficulty (amount of money they start with)
 void generatePlayer() {
     SlowStream sout(20);
     string name;
@@ -239,7 +257,8 @@ void generatePlayer() {
         cout << endl;
         sout << "Enter your Choice: ";
         cout << endl;
-        if (!(cin >> difficulty)) {
+        if (!(cin >> difficulty)) 
+        {
             cout << endl;
             cout << "Letters are not difficulties." << endl;
             cout << endl;
@@ -248,14 +267,16 @@ void generatePlayer() {
         }
         cout << endl;
         
-        if (difficulty >= 1 && difficulty <= 3) {
+        if (difficulty >= 1 && difficulty <= 3) 
+        {
             break;
         } else {
             cout << "Please choose from the selectable options" << endl;
         }
     }
 
-    if (difficulty == 1) {
+    if (difficulty == 1) 
+    {
         money = 2000;
     } else if (difficulty == 2) {
         money = 1000;
@@ -267,11 +288,13 @@ void generatePlayer() {
 
 }
 
+// Simple function to add an item to the player's item vector
 void addItem(Item* item) {
     user.addItem(item);
 }
 
 
+// Game exposition text
 void firstIntro() {
     SlowStream sout(20);
     cout << endl;
@@ -293,6 +316,7 @@ void firstIntro() {
     cout << "" << endl;
 }
 
+// Prints out the main option menu
 void getOptions() {
     SlowStream sout(20);
     cout << "**************************************" << endl;
@@ -310,6 +334,7 @@ void getOptions() {
     cout << endl;
 }
 
+// Prints out the explore option, and determines if the user succeeds by checking the current location's criteria
 void explore() {
     SlowStream sout(20);
     int choice;
@@ -333,7 +358,8 @@ void explore() {
 
     if (tf == true && currentLocation->getLocationChoice() == true)
     {
-        for (Item* item : itemList) {
+        for (Item* item : itemList) 
+        {
             if (item->checkAvailability())
             {
                 addItem(item);
@@ -373,6 +399,7 @@ void explore() {
     }
 }
 
+// Prints out ALL shop dialouge and adds the item to the user's vector if they buy something. EVERYTHING shop is done here
 void shop() {
     SlowStream sout(20);
     vector<Item*> stock = currentLocation->getStoreItems();
@@ -382,10 +409,12 @@ void shop() {
     cout << endl;
     sout << "Welcome to " + currentLocation->getLocationName() + "'s shop.";
     cout << endl;
-    while (true) {
+    while (true) 
+    {
         cout << "---------------------------------------------------------------" << endl;
 
-        for (Item* item : stock) {
+        for (Item* item : stock) 
+        {
             sout << to_string(counter) + ". " + item->getItemName() + ": " + item->getItemDescription();
             cout << endl;
             sout << "Cost: " + to_string(item->getItemCost()) + " gold.";
@@ -396,7 +425,8 @@ void shop() {
         cout << endl;
         sout << "Select the number that corresponds to the item you would like to buy. Or, press '0' to leave.";
         cout << endl;
-        if (!(cin >> choice)) {
+        if (!(cin >> choice)) 
+        {
             cout << endl;
             cout << "Letters are not numbers." << endl;
             cout << endl;
@@ -410,8 +440,10 @@ void shop() {
             cout << endl;
             break;
         }
-        if (choice >= 1 && choice <= stock.size()) {
-            if (user.GetMoney() < stock[choice - 1]->getItemCost()) {
+        if (choice >= 1 && choice <= stock.size()) 
+        {
+            if (user.GetMoney() < stock[choice - 1]->getItemCost()) 
+            {
                 cout << endl;
                 sout << "You don't have enough money for that!";
                 cout << endl;
@@ -434,9 +466,9 @@ void shop() {
             counter = 1;
         }
     }
-
 }
 
+// Prints out the player's item vector contents
 void viewInventory() {
     SlowStream sout(20);
     cout << endl;
@@ -448,7 +480,8 @@ void viewInventory() {
     cout << endl;
     cout << endl;
 
-    if (inventory.empty()) {
+    if (inventory.empty()) 
+    {
         sout << "Your inventory is empty... Womp Womp";
         cout << endl;
         cout << endl;
@@ -457,7 +490,8 @@ void viewInventory() {
         sout << "Inventory: ";
         cout << endl;
         cout << "---------------------------------------------------------------" << endl;
-        for (Item* item : inventory) {
+        for (Item* item : inventory) 
+        {
             sout << "Name: " + item->getItemName() + ".";
             cout << endl;
             sout << "Description: " + item->getItemDescription();
@@ -469,20 +503,25 @@ void viewInventory() {
     }
 }
 
+// prints out and asks for the user to leave the current location
+// Uses the Node's "getNext()" function to set the global node and location to the next one
 void leaveTown() {
     SlowStream sout(20);
     cout << endl;
     int option = 0;
-    while (option != 1 && option != 2) {
+    while (option != 1 && option != 2) 
+    {
         sout << "Are you sure you would like to leave " + currentLocation->getLocationName() + "? (1:yes, 2 : no)";
         cout << endl;
         cin >> option;
         cout << endl;
     }
 
-    if (option == 1) {
+    if (option == 1) 
+    {
         currentNode = currentNode->getNext();
-        if (currentNode != nullptr) {
+        if (currentNode != nullptr) 
+        {
             currentLocation = currentNode->getData();
             cout << "______________________________________________________________" << endl;
             cout << endl;
@@ -504,14 +543,15 @@ void leaveTown() {
     }
 }
 
-
+// Too many times we needed a simple 1 or 2 option, so this function does that while ONLY allowing those options.
 int get12Choice() {
     int choice;
     while (true)
     {
         cout << endl;
         cout << "Enter the number for the option you want" << endl;
-        if (!(cin >> choice)) {
+        if (!(cin >> choice)) 
+        {
             cout << endl;
             cout << "Letters are not choices, you should know this by now." << endl;
             cout << endl;
@@ -519,21 +559,23 @@ int get12Choice() {
             cin.ignore(1000, '\n');
         }
         cout << endl;
-        if (choice == 1 || choice == 2) {
+        if (choice == 1 || choice == 2) 
+        {
             break;
         }
         else {
             cout << "Please choose from the selectable options" << endl;
         }
     }
-
     return choice;
 }
+// Creates the rng we need to run our algorithms
 int getRand() {
     int randomNumber = rand() % 20 + 1;
     return randomNumber;
 }
 
+// Calls the text for the final battle, along with a choice for which type of battle to do
 void finalBattle() {
     SlowStream sout(20);
     int attack=0;
@@ -543,9 +585,11 @@ void finalBattle() {
     int choice1;
 
     vector<Item*> inventory = user.GetItems();
-    for (Item* item : inventory) {
+    for (Item* item : inventory) 
+    {
         Weapon* weapon = dynamic_cast<Weapon*>(item);
-        if (weapon != nullptr) {
+        if (weapon != nullptr) 
+        {
             attack += weapon->getAttack();
             magic += weapon->getMagic();
         }
@@ -576,7 +620,8 @@ void finalBattle() {
 
     choice1 = get12Choice();
 
-    if (choice1 == 1) {
+    if (choice1 == 1) 
+    {
         stealthBattle(attack,magic,defense,evasion);
     }
     else {
@@ -584,14 +629,17 @@ void finalBattle() {
     }
 }
 
+// Prints our the user's stats by using an alogorithm, helping the user choose which options of battle they should do
 void printStats(int attack, int magic, int defense, int evasion) {
     SlowStream sout(20);
     int stats[] = { attack, magic, defense, evasion};
     string words[] = { "Attack", "Magic", "Defense", "Evasion" };
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) 
+    {
         sout << "I feel like my " + words[i] + " is ";
-        if (stats[i]<8) {
+        if (stats[i]<8) 
+        {
             cout << "Bad." << endl;
         }
         else if (stats[i]<12) {
@@ -606,6 +654,7 @@ void printStats(int attack, int magic, int defense, int evasion) {
     }
 }
 
+// Prints out the story scenario in it's entirely for the stealth battle option. Exits with a win or a loss
 void stealthBattle(int attack, int magic, int defense, int evasion) {
     SlowStream sout(20);
     int choice;
@@ -616,7 +665,8 @@ void stealthBattle(int attack, int magic, int defense, int evasion) {
     sout << ".   .   .";
     cout << endl;
 
-    if (evasion > 20) {
+    if (evasion > 20) 
+    {
         sout << "You manage to sneak up to the beast's weakest point, giving him a quick and precise end.";
         cout << endl;
         printWin();
@@ -643,8 +693,10 @@ void stealthBattle(int attack, int magic, int defense, int evasion) {
     cout << endl << endl;
     choice = get12Choice();
 
-    if (choice == 1) {
-        if (getRand() + evasion < 22) {
+    if (choice == 1) 
+    {
+        if (getRand() + evasion < 22) 
+        {
             sout << "Your attempt to dodge is unsuccessful.";
             cout << endl;
             printLoss();
@@ -654,7 +706,8 @@ void stealthBattle(int attack, int magic, int defense, int evasion) {
         cout << endl;
     }
     else {
-        if (getRand() + magic < 18) {
+        if (getRand() + magic < 18) 
+        {
             sout << "Your magic is not strong enough to counter the beast's spell.";
             cout << endl;
             printLoss();
@@ -669,8 +722,10 @@ void stealthBattle(int attack, int magic, int defense, int evasion) {
     sout << "1. Try to finish him with an attack               2. Try to finish him with magic";
     cout << endl;
     choice2 = get12Choice();
-    if (choice2 == 1) {
-        if (getRand() + attack > 20) {
+    if (choice2 == 1) 
+    {
+        if (getRand() + attack > 20) 
+        {
             sout << "Just in the nick of time, your weapon strikes into Pyutorr, making his attack impode on himself!";
             cout << endl;
             printWin();
@@ -684,7 +739,8 @@ void stealthBattle(int attack, int magic, int defense, int evasion) {
         }
     }
     else {
-        if (getRand() + magic > 18) {
+        if (getRand() + magic > 18) 
+        {
             sout << "Just in the nick of time, your spell causes the blast Pyutorr was forming to combust.";
             cout << endl;
             printWin();
@@ -699,6 +755,7 @@ void stealthBattle(int attack, int magic, int defense, int evasion) {
     }
 }
 
+// Prints out the story scenario in it's entirely for the attack battle option. Exits with a win or a loss
 void attackBattle(int attack, int magic, int defense, int evasion) {
     SlowStream sout(20);
     int choice;
@@ -708,7 +765,8 @@ void attackBattle(int attack, int magic, int defense, int evasion) {
     cout << endl;
     sout << ".   .   .";
     cout << endl;
-    if (attack > 20) {
+    if (attack > 20) 
+    {
         sout << "IT HITS. Catching the beast off gaurd, you kill him instantly.";
         cout << endl;
         printWin();
@@ -721,7 +779,8 @@ void attackBattle(int attack, int magic, int defense, int evasion) {
     else {
         sout << "Your attack bounces right off the beast. He is now woken with the threat of danger.";
         cout << endl;
-        if (getRand() + defense < 20) {
+        if (getRand() + defense < 20) 
+        {
             sout << "He instantly slams you with its giant tail, knocking you unconcious. ";
             cout << endl;
             printLoss();
@@ -739,8 +798,10 @@ void attackBattle(int attack, int magic, int defense, int evasion) {
     cout << endl;
     choice = get12Choice();
 
-    if (choice == 1) {
-        if (getRand() + evasion < 22) {
+    if (choice == 1) 
+    {
+        if (getRand() + evasion < 22) 
+        {
             sout << "You were unable to dodge Pyutorr's flames.";
             cout << endl;
             printLoss();
@@ -750,7 +811,8 @@ void attackBattle(int attack, int magic, int defense, int evasion) {
         cout << endl;
     }
     else {
-        if (getRand() + defense < 22) {
+        if (getRand() + defense < 22) 
+        {
             sout << "You were unable to withstand the hit. ";
             cout << endl;
             printLoss();
@@ -767,8 +829,10 @@ void attackBattle(int attack, int magic, int defense, int evasion) {
     cout << endl;
     choice2 = get12Choice();
 
-    if (choice2 == 1) {
-        if (getRand() + attack > 20) {
+    if (choice2 == 1) 
+    {
+        if (getRand() + attack > 20) 
+        {
             sout << "Just in the nick of time, your weapon strikes into Pyutorr, making his attack impode on himself!";
             cout << endl;
             printWin();
@@ -782,7 +846,8 @@ void attackBattle(int attack, int magic, int defense, int evasion) {
         }
     }
     else {
-        if (getRand() + magic > 18) {
+        if (getRand() + magic > 18) 
+        {
             sout << "Just in the nick of time, your spell causes the blast Pyutorr was forming to combust.";
             cout << endl;
             printWin();
@@ -797,6 +862,7 @@ void attackBattle(int attack, int magic, int defense, int evasion) {
     }
 }
 
+// Prints out the win text
 void printWin() {
     SlowStream sout(20);
     sout << "____________________________________________________";
@@ -816,6 +882,7 @@ void printWin() {
     cout << endl;
 }
 
+// Prints out the lose text
 void printLoss() {
     SlowStream sout(20);
     sout << "____________________________________________________";
@@ -833,7 +900,8 @@ void printLoss() {
     cout << endl;
 }
 
-
+// Main calls our generators, keeps the while loop alive, starts the final battle when the final area is reached,
+// and prints out the final text for the user to see.
 int main() {
     SlowStream sout(20);
     
@@ -857,11 +925,13 @@ int main() {
     firstIntro();
 
 
-    while (finalLevel == false) {
+    while (finalLevel == false) 
+    {
         getOptions();
         sout << "Pick an option with numbers 1-4.";
         cout << endl;
-        if (!(cin >> choice)) { 
+        if (!(cin >> choice)) 
+        { 
             cout << endl;
             cout << "Why not press a number you fool." << endl;
             cout << endl;
@@ -905,6 +975,5 @@ int main() {
     cout << "    |_|  |_| |_|\\__,_|_| |_|_|\\_\\  \\__, |\\___/ \\__,_| |_| \\___/|_|    |_|    |_|\\__,_|\\__, |_|_| |_|\\__, (_) " << endl;
     cout << "                                    __/ |                                              __/ |         __/ |  " << endl;
     cout << "                                   |___/                                              |___/         |___/   " << endl;
-
     return 0;
 }
